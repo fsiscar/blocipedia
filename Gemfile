@@ -41,6 +41,12 @@ group :development do
   gem 'listen', '~> 3.0.5'
 end
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+  gem 'rails-controller-testing'
+  gem 'shoulda'
+end
+
 gem 'bootstrap-sass'
 
 gem 'devise'
