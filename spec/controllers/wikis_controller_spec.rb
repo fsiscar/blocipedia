@@ -5,7 +5,7 @@ RSpec.describe WikisController, type: :controller do
   let(:my_user) { User.create!(email: "my_user@gmail.com", password:"password") }
   let(:my_wiki) { Wiki.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: my_user) }
 
-  describe "GET #index" do
+  describe "GET index" do
     it "returns http success" do
       get :index
       expect(response).to have_http_status(:success)

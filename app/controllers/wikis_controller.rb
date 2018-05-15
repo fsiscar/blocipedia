@@ -14,7 +14,8 @@ class WikisController < ApplicationController
     @wiki = Wiki.new
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
-    if @wiki.save
+    @wiki.user = current_user
+    if @wiki.save!
       flash[:notice] = "Wiki was saved."
       redirect_to @wiki
     else
