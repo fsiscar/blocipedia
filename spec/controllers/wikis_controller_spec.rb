@@ -2,40 +2,60 @@ require 'rails_helper'
 
 
 RSpec.describe WikisController, type: :controller do
-  let(:my_user) { User.create!(email: "my_user@gmail.com", password:"password") }
+  my_user = User.create!(email: RandomData.random_email, password:RandomData.random_word)
+  my_user.confirm
   let(:my_wiki) { Wiki.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: my_user) }
+
 
   describe "GET index" do
     it "returns http success" do
+      sign_in my_user
       get :index
       expect(response).to have_http_status(:success)
     end
 
     it "assigns [my_wiki] to @wikis" do
+      sign_in my_user
       get :index
       expect(assigns(:wikis)).to eq([my_wiki])
     end
   end
 
-  # describe "GET #show" do
-  #   it "returns http success" do
-  #     get :show
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET show" do
+    it "returns http success" do
+      sign_in my_user
+      get :show, params: { id: my_wiki.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "renders the #show view" do
+      sign_in my_user
+      get :show, params: { id: my_wiki.id }
+      expect(response).to render_template :show
+    end
+
+    it "assigns my_wiki to @wiki" do
+      sign_in my_user
+      get :show, params: { id: my_wiki.id }
+      expect(assigns(:wiki)).to eq(my_wiki)
+    end
+  end
 
   describe "GET new" do
     it "returns http success" do
+      sign_in my_user
       get :new
       expect(response).to have_http_status(:success)
     end
 
     it "renders the #new view" do
+      sign_in my_user
       get :new
       expect(response).to render_template :new
     end
 
     it "instantiates @wiki" do
+      sign_in my_user
       get :new
       expect(assigns(:wiki)).not_to be_nil
     end
@@ -43,16 +63,19 @@ RSpec.describe WikisController, type: :controller do
 
   describe "POST create" do
     it "increases the number of Wiki by 1" do
-      expect{ wiki :create, params: { wiki: { title: RandomData.random_sentence, body: RandomData.random_paragraph} } }.to change(Wiki,:count).by(1)
+      sign_in my_user
+      expect{ post :create, params: { wiki: { title: RandomData.random_sentence, body: RandomData.random_paragraph } } }.to change(Wiki,:count).by(1)
     end
 
     it "assigns the new wiki to @wiki" do
-      wiki :create, params: { wiki: { title: RandomData.random_sentence, body: RandomData.random_paragraph } }
+      sign_in my_user
+      post :create, params: { wiki: { title: RandomData.random_sentence, body: RandomData.random_paragraph } }
       expect(assigns(:wiki)).to eq Wiki.last
     end
 
     it "redirects to the new wiki" do
-      wiki :create, params: { wiki: { title: RandomData.random_sentence, body: RandomData.random_paragraph } }
+      sign_in my_user
+      post :create, params: { wiki: { title: RandomData.random_sentence, body: RandomData.random_paragraph } }
       expect(response).to redirect_to Wiki.last
     end
   end
