@@ -24,6 +24,14 @@
         <% end %>
       </ul>
 
+      <% if flash[:notice] %>
+        <button type="button" data-dismiss="alert">&times;</button>
+        <%= flash[:notice] %>
+      <% elsif flash[:alert] %>
+        <button type="button" data-dismiss="alert">&times;</button>
+        <%= flash[:alert] %>
+      <% end %>
+
       <%= yield %>
     </div>
   </body>
