@@ -1,0 +1,16 @@
+<h1>New Wiki</h1>
+<div class="row">
+  <%= form_for @wiki do |f| %>
+    <div>
+      <%= f.label :tile %>
+      <%= f.text_field :title %>
+    </div>
+    <div>
+      <%= f.label :body %>
+      <%= f.text_area :body %>
+    </div>
+    <div>
+      <%= f.submit "Save" %>
+    </div>
+  <% end %>
+</div>
